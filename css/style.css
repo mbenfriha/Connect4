@@ -1,0 +1,40 @@
+body {
+    background-color: black;
+    color: white;
+    font-family: Impact, fantasy;
+}
+.header {
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+.header h1 {
+    text-align: center;
+}
+
+span {
+    text-align: center;
+}
+
+h2 {
+    text-align: center;
+}
+
+.tour {
+    font-size: 40px;
+}
+
+
+.rond {
+    position: relative;
+}
+
+.pion {
+   position: absolute;
+}
+.score
+{
+    position: absolute;
+    right: 14%;
+    font-size: 30px;
+}
