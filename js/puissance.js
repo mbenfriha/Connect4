@@ -17,7 +17,7 @@
                 }
             }
             $('#puissance').before('<div class="header"><h1>Puissance 4</h1><h2 class="tour"></h2></div>');
-            $('.header').after('<div class="score"><button type="button">Reset score</button><p class="j1">Joueur 1 : 0</p><p class="j2">Joueur 2 : 0</p></div>');
+            $('.header').after('<div class="score"><button class="annule" type="button">Annuler dernier</button><p class="j1">Joueur 1 : 0</p><p class="j2">Joueur 2 : 0</p></div>');
         }
 
         function resetScore(j1, j2) {
@@ -41,6 +41,21 @@
             var j1 = 0;
             var j2 = 0;
 
+            $('.annule').on('click', function ()
+            {
+                if(played > 1) {
+                    var current_player = played % 2;
+                    var next_player = (played + 1) % 2;
+                    var tour = next_player == 0 ? "2" : "1";
+                    played--;
+                    $('#pion-' + played).parent().data('state', 'empty');
+                    $('#pion-' + played).remove();
+                    $('.rond').css('border', '2px solid ' + color[current_player]);
+                    $('h2').text("Au tour du joueur " + tour);
+                }
+            });
+
+
             $('.rond').on('click', function ()
             {
                 var yLast = grid[1];
@@ -50,7 +65,7 @@
                 var current_player = played % 2;
                 var next_player = (played + 1) % 2;
 
-                var tour = next_player == 0 ? "1" : "2";
+                var tour = next_player == 1 ? "1" : "2";
                 var current = current_player == 0 ? "1" : "2";
 
                 while ($('[data-x=' + x + '][data-y=' + yLast + ']').data('state') != "empty" && yLast > 0)
@@ -58,19 +73,19 @@
 
                 $('[data-x=' + x + '][data-y=' + yLast + ']').data('state', current_player).append('<div class="pi" id="pion-'+ played + '"></div>');
                 $('#pion-' + played).css("height", "100px").css("width", "100px").css("border-radius", "50px").css('background-color', color[next_player]).css('position', 'absolute');
-                $('#pion-' + played).css('top', '-600%');
+                $('#pion-' + played).css('top', '-1000%');
                 $('#pion-' + played).animate({ top: "0%" }, "slow" );
 
 
 
                 if (check(x, yLast, y, current_player, current))
                 {
-                    alert("Le joueur " + current + " a gagné");
                     played = 0 + next_player;
                     current == 1 ? j1+=1 : j2+=1;
-                    $('.j1').text("joueur 1: " + j1 );
-                    $('.j2').text("joueur 2: " + j2 );
+                    $('.j1').text("Joueur 1 : " + j1 );
+                    $('.j2').text("joueur 2 : " + j2 );
                     clearRond();
+
                 }
 
                 else if(yLast > 0) {
@@ -79,8 +94,12 @@
                     $('h2').text("Au tour du joueur " + tour);
             }
 
+
                 if (played == (grid[1] * grid[0]))
                     alert("null");
+
+
+
 
             });
         }
