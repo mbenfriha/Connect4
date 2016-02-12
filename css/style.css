@@ -1,7 +1,12 @@
+* {
+    perspective: 500px;
+    -webkit-perspective: 500px; /* Chrome, Safari, Opera */
+}
+
 body {
-    background-color: black;
-    color: white;
+    color: black;
     font-family: Impact, fantasy;
+    text-shadow:0 0 3px black;
 }
 .header {
     margin: 0 auto;
@@ -22,6 +27,8 @@ h2 {
 
 .tour {
     font-size: 40px;
+    position: relative;
+    left: -10%;
 }
 
 
@@ -35,6 +42,59 @@ h2 {
 .score
 {
     position: absolute;
-    right: 12%;
+    right: 22%;
     font-size: 30px;
+    background-color: blue;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: black 5px 4px 11Px;
+}
+
+.win {
+    height: 100px;
+    width: 434px;
+    background-color: rgba(255, 255, 255, 0.76);
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    border-radius: 10px;
+    color: black;
+    text-align: center;
+    font-size: 45px;
+}
+
+.win button {
+    position: absolute;
+    top: 60%;
+    left: 38%;
+}
+
+button {
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font: 14px/100% Arial, Helvetica, sans-serif;
+    padding: .5em 1em .55em;
+    text-shadow: 0 1px 1px rgba(0,0,0,.3);
+    border-radius: .5em;
+    box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    background-color: red;
+}
+button:hover {
+    text-decoration: none;
+}
+
+#puissance {
+    box-shadow: black 5px 4px 11Px;
+}
+
+span {
+    color: red;
+}
+
+#start {
+    margin-top: 10px;
+    margin-left: 39%;
 }

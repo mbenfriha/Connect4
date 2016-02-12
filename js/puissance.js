@@ -5,45 +5,93 @@
 (function($) {
     $.fn.puissance = function(options)
     {
+
+        var start = options.start ? false : true;
         var grid = options.grid ? options.grid : [7, 6];
         var color = options.color ? options.color : ["red", "yellow"];
         var background = options.background ? options.background : ["blue"];
-        var width = (122 * grid[0]) + 20;
+        var players = options.players ? options.players : ["Joueur 1", "Joueur 2"];
+        var width = (59 * grid[0]) + 23;
 
-        function createGrid(grid) {
+        function menu()
+        {
+            $('#puissance').css('border', '1px solid black').css('padding', '10px').css('background-color', background[0]).css("margin", "0px auto").css("width", width+'px').css('border-radius', "10px");
+            $('#puissance').append('<div class="menu"><span>Joueur 1 : </span><input id="joueur1" type="text"> <span>Joueur 2 : </span><input id="joueur2" type="text"> </div> <button id="start">commencer</button>')
+
+            $('#start').on('click', function(){
+
+                players[0] = $('#joueur1').val();
+                players[1] = $('#joueur2').val();
+
+                $('#puissance').html("");
+                createGrid(grid, players);
+                setCSS();
+                play();
+            });
+        }
+
+        function createGrid(grid)
+        {
             for (var i = 1; i <= grid[1]; i++) {
                 for (var j = 1; j <= grid[0]; j++) {
                     $('#puissance').append('<div data-state=empty data-x="' + j +'" data-y="' + i +'" class="rond"></div>');
                 }
             }
-            $('#puissance').before('<div class="header"><h1>Puissance 4</h1><h2 class="tour"></h2></div>');
-            $('.header').after('<div class="score"><button class="annule" type="button">Annuler dernier</button><p class="j1">Joueur 1 : 0</p><p class="j2">Joueur 2 : 0</p></div>');
+            $('.header').after('<div class="score"><button class="annule" type="button">Annuler dernier</button><p class="j1">Joueur 1 : 0</p><p class="j2">Joueur 2 : 0</p><div class="sound"><img id="sound" src="css/sound.png" alt=""></div></div>');
+            $('.j1').text(players[0]+" : 0 ");
+            $('.j1').css("color", color[0]);
+            $('.j2').text(players[1]+" : 0 ");
+            $('.j2').css("color", color[1]);
         }
 
-        function resetScore(j1, j2) {
-            j1 = 0;
-            j2 = 0;
+        function victory(win, sound)
+        {
+         var win =  win == 1 ? "1" : "2";
+            $('#puissance').before('<audio id="win" preload="auto"> <source src="win.mp3"></source>');
+            $('body').append('<div class="win"></div>');
+            $('.win').text("le joueur "+win+ " a gagné");
+            $('.win').append('<button id="replay">Rejouer</button>');
+            $('.win').animate({ left: "37%"}, "slow" );
+            if (sound)
+                $("#win")[0].play();
         }
 
+        function setCSS()
+        {
 
-        function setCSS(){
             $('#puissance').css('border', '1px solid black').css('padding', '10px').css('background-color', background[0]).css("margin", "0px auto").css("width", width+'px').css('border-radius', "10px");
-            $('.rond').css('border', '2px solid red').css('height', "100px").css('width', "100px").css('border-radius', "100px").css('background-color', 'black').css('margin', '10px').css('display', 'inline-block').css('position', 'relative');
+            $('.rond').css('border', '2px solid red').css('height', "50px").css('width', "50px").css('border-radius', "100px").css('background-color', 'white').css('margin', '4px').css('display', 'inline-block').css('position', 'relative');
         }
 
-        function clearRond(){
+        function clearRond()
+        {
             $( ".pi" ).remove();
             $('.rond').data('state', 'empty');
         }
 
-        function play() {
+        function play()
+        {
             var played = 1;
             var j1 = 0;
             var j2 = 0;
+            var sound = true;
+
+            $('.sound').on('click', function()
+            {
+                if ($('#sound').attr('src') == "css/mute.png") {
+                    $('#sound').attr('src', "css/sound.png");
+                    sound = true;
+                }
+                else {
+                    $('#sound').attr('src', "css/mute.png");
+                    sound = false;
+                }
+
+            });
 
             $('.annule').on('click', function ()
             {
-                if(played > 1) {
+                if(played > 0) {
                     var current_player = played % 2;
                     var next_player = (played + 1) % 2;
                     var tour = next_player == 0 ? "2" : "1";
@@ -72,7 +120,7 @@
                     yLast--;
 
                 $('[data-x=' + x + '][data-y=' + yLast + ']').data('state', current_player).append('<div class="pi" id="pion-'+ played + '"></div>');
-                $('#pion-' + played).css("height", "100px").css("width", "100px").css("border-radius", "50px").css('background-color', color[next_player]).css('position', 'absolute');
+                $('#pion-' + played).css("height", "50px").css("width", "50px").css("border-radius", "50px").css('background-color', color[next_player]).css('position', 'absolute');
                 $('#pion-' + played).css('top', '-1000%');
                 $('#pion-' + played).animate({ top: "0%" }, "slow" );
 
@@ -80,19 +128,28 @@
 
                 if (check(x, yLast, y, current_player, current))
                 {
-                    played = 0 + next_player;
-                    current == 1 ? j1+=1 : j2+=1;
-                    $('.j1').text("Joueur 1 : " + j1 );
-                    $('.j2').text("joueur 2 : " + j2 );
-                    clearRond();
+                    victory(current_player, sound);
+                    $('#replay').on('click', function () {
+                        played = 0 + next_player;
+                        current == 1 ? j1 += 1 : j2 += 1;
+                        $('.j1').text(players[0]+" : " + j2);
+                        $('.j1').css("color", color[0]);
+                        $('.j2').text(players[1]+" : " + j1);
+                        $('.j2').css("color", color[1]);
+                        clearRond();
+                        $('.win').remove();
+                    });
 
                 }
 
                 else if(yLast > 0) {
                     played++;
                     $('.rond').css('border', '2px solid '+color[current_player]);
-                    $('h2').text("Au tour du joueur " + tour);
+                    $('h2').text("Au tour du joueur " + tour).css("left", "-100%");
+                    $('h2').animate({ left: "0%"}, "slow" );
+                    $('h2').css("color", color[current_player]);
             }
+                console.log(played);
 
 
                 if (played == (grid[1] * grid[0]))
@@ -271,8 +328,21 @@
             }
         }
 
-        createGrid(grid);
-        setCSS();
-        play();
+        $('#puissance').before('<div class="header"><h1>Puissance 4</h1><h2 class="tour"></h2></div>');
+
+
+        if (start)
+        menu();
+        else {
+            createGrid(grid);
+            setCSS();
+            play();
+        }
+
+        $(document).mousemove(function(event) {
+            $('#puissance').css({
+                transform: 'rotateY('+ (event.pageX - $(window).width() / 2) /20 +'deg)'
+            });
+        });
     };
 })(jQuery);
