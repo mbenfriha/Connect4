@@ -5,6 +5,10 @@ Connect4 / Puissance 4
 
 Plugin Puissance 4 sous Jquery
 
+#DEMO
+
+http://mohamedbenfriha.me/connect4/
+
 
 # OPTIONS
 Voici les options surchargeable du plugin:
@@ -21,3 +25,9 @@ Voici les options surchargeable du plugin:
 
 Le plugins contient des animations, les scores, des bruitages et il est possible de désactiver ces derniers.
 Il y a aussi un undo à l'infini.
+
+# BUG A RÉGLER
+
+-pseudo différent
+
+-désactiver clique lors de la victoire
