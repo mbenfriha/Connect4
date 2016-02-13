@@ -4,7 +4,5 @@
 
 
 $(document).ready(function() {
-    $("#puissance").puissance({
-
-    });
+    $("#puissance").puissance({});
 });

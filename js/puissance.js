@@ -47,7 +47,7 @@
         function victory(win, sound)
         {
          var win =  win == 1 ? "1" : "2";
-            $('#puissance').before('<audio id="win" preload="auto"> <source src="win.mp3"></source>');
+            $('#puissance').before('<audio id="win" preload="auto"> <source src="audio/win.mp3"></source>');
             $('body').append('<div class="win"></div>');
             $('.win').text("le joueur "+win+ " a gagné");
             $('.win').append('<button id="replay">Rejouer</button>');
@@ -78,12 +78,12 @@
 
             $('.sound').on('click', function()
             {
-                if ($('#sound').attr('src') == "css/mute.png") {
-                    $('#sound').attr('src', "css/sound.png");
+                if ($('#sound').attr('src') == "css/img/mute.png") {
+                    $('#sound').attr('src', "css/img/sound.png");
                     sound = true;
                 }
                 else {
-                    $('#sound').attr('src', "css/mute.png");
+                    $('#sound').attr('src', "css/img/mute.png");
                     sound = false;
                 }
 
